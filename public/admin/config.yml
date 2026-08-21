@@ -1,0 +1,177 @@
+backend:
+  name: github
+  repo: qinglove777/Firefly
+  branch: master
+  base_url: https://oauth.decapcms.app
+
+# 本地开发时运行 npx decap-server 即可在 localhost 直接编辑；线上会自动回退到 GitHub 登录
+local_backend: true
+
+locale: zh_Hans
+
+media_folder: src/content/posts/images
+public_folder: images
+
+collections:
+  - name: posts
+    label: 文章
+    label_singular: 文章
+    folder: src/content/posts
+    create: true
+    format: frontmatter
+    path: "{{slug}}"
+    summary: "{{published}} - {{title}}"
+    sortable_fields: [published, title]
+    editor:
+      preview: false
+    fields:
+      - label: 标题
+        name: title
+        widget: string
+        required: true
+      - label: 发布日期
+        name: published
+        widget: datetime
+        required: true
+        date_format: YYYY-MM-DD
+        format: "YYYY-MM-DDTHH:mm:ss.SSSZ"
+      - label: 更新时间
+        name: updated
+        widget: datetime
+        required: false
+        date_format: YYYY-MM-DD
+        format: "YYYY-MM-DDTHH:mm:ss.SSSZ"
+      - label: 草稿
+        name: draft
+        widget: boolean
+        required: false
+        default: false
+        hint: 勾选后文章不会在网站上显示
+      - label: 摘要
+        name: description
+        widget: text
+        required: false
+      - label: 封面图
+        name: image
+        widget: image
+        required: false
+        choose_url: true
+      - label: 标签
+        name: tags
+        widget: list
+        required: false
+        field:
+          label: 标签
+          name: tag
+          widget: string
+      - label: 分类
+        name: category
+        widget: string
+        required: false
+      - label: 语言
+        name: lang
+        widget: string
+        required: false
+      - label: 置顶
+        name: pinned
+        widget: boolean
+        required: false
+        default: false
+      - label: 作者
+        name: author
+        widget: string
+        required: false
+      - label: 原文链接
+        name: sourceLink
+        widget: string
+        required: false
+      - label: 许可协议名称
+        name: licenseName
+        widget: string
+        required: false
+      - label: 许可协议链接
+        name: licenseUrl
+        widget: string
+        required: false
+      - label: 允许评论
+        name: comment
+        widget: boolean
+        required: false
+        default: true
+      - label: 文章密码
+        name: password
+        widget: string
+        required: false
+      - label: 密码提示
+        name: passwordHint
+        widget: string
+        required: false
+      - label: 正文
+        name: body
+        widget: markdown
+
+  - name: dynamic
+    label: 动态
+    label_singular: 动态
+    folder: src/content/dynamic
+    create: true
+    format: frontmatter
+    path: "{{year}}-{{month}}-{{day}}-{{hour}}{{minute}}{{second}}"
+    summary: "{{published}}"
+    sortable_fields: [published]
+    media_folder: src/content/dynamic/images
+    public_folder: images
+    editor:
+      preview: false
+    fields:
+      - label: 发布时间
+        name: published
+        widget: datetime
+        required: true
+        date_format: YYYY-MM-DD
+        time_format: HH:mm:ss
+        format: "YYYY-MM-DDTHH:mm:ss.SSSZ"
+      - label: 置顶
+        name: pinned
+        widget: boolean
+        required: false
+        default: false
+      - label: 位置
+        name: location
+        widget: string
+        required: false
+      - label: 内容
+        name: body
+        widget: markdown
+        required: true
+
+  - name: spec
+    label: 单页
+    label_singular: 页面
+    media_folder: src/content/spec/images
+    public_folder: images
+    editor:
+      preview: false
+    files:
+      - name: about
+        label: 关于我
+        file: src/content/spec/about.md
+        fields:
+          - label: 正文
+            name: body
+            widget: markdown
+      - name: guestbook
+        label: 留言板
+        file: src/content/spec/guestbook.md
+        fields:
+          - label: 正文
+            name: body
+            widget: markdown
+      - name: friends
+        label: 友链
+        file: src/content/spec/friends.mdx
+        fields:
+          - label: 正文
+            name: body
+            widget: markdown
+

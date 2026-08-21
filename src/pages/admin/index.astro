@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="robots" content="noindex, nofollow" />
+    <title>内容管理</title>
+  </head>
+  <body>
+    <script is:inline src="https://cdn.jsdelivr.net/npm/pinyin-pro@3.26.0/dist/index.js"></script>
+    <script is:inline src="https://cdn.jsdelivr.net/npm/decap-cms@3/dist/decap-cms.js"></script>
+    <script is:inline>
+      // 新建文章时，把中文标题转成拼音文件名（与主题 scripts/new-post.js 逻辑一致）
+      const toPinyinSlug = (value) => {
+        const chars = [...value];
+        const parts = [];
+        let buf = "";
+        for (const ch of chars) {
+          if (/[\u4e00-\u9fff]/.test(ch)) {
+            if (buf) {
+              parts.push(buf);
+              buf = "";
+            }
+            parts.push(window.pinyinPro.pinyin(ch, { toneType: "none", type: "array" })[0]);
+          } else {
+            buf += ch;
+          }
+        }
+        if (buf) parts.push(buf);
+        return parts
+          .join("-")
+          .toLowerCase()
+          .replace(/[^a-z0-9-]/g, "")
+          .replace(/-+/g, "-")
+          .replace(/^-|-$/g, "");
+      };
+
+      window.CMS.registerEventListener({
+        name: "preSave",
+        handler: ({ entry, collection }) => {
+          try {
+            if (entry.get("newRecord") && collection.get("name") === "posts") {
+              const title = entry.getIn(["data", "title"]) || "";
+              if (title) {
+                const slug = toPinyinSlug(title);
+                if (slug) return entry.set("slug", slug);
+              }
+            }
+          } catch (err) {
+            console.error("拼音文件名转换失败，将使用默认文件名", err);
+          }
+          return entry;
+        },
+      });
+    </script>
+  </body>
+</html>
