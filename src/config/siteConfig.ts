@@ -40,10 +40,10 @@ const pages = resolvePageToggles({
 
 export const siteConfig: SiteConfig = {
 	// 站点标题
-	title: "轻舟过青山",
+	title: "欢迎来到我的博客",
 
 	// 站点副标题
-	subtitle: "qzgqs",
+	subtitle: "qing",
 
 	// 站点 URL
 	site_url: "https://firefly.cuteleaf.cn",
