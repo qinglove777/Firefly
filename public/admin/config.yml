@@ -117,6 +117,7 @@ collections:
     folder: src/content/dynamic
     create: true
     format: frontmatter
+    identifier_field: published
     path: "{{year}}-{{month}}-{{day}}-{{hour}}{{minute}}{{second}}"
     summary: "{{published}}"
     sortable_fields: [published]
